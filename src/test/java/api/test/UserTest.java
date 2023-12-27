@@ -19,7 +19,7 @@ public class UserTest {
 	{
 		faker = new Faker();
 		userinfo = new User();
-		updateEmail = new User();
+		//updateEmail = new User();
 		userinfo.setEmail(faker.internet().safeEmailAddress());
 		userinfo.setFirstName(faker.name().firstName());
 		userinfo.setId(faker.idNumber().hashCode());
@@ -27,7 +27,7 @@ public class UserTest {
 		userinfo.setPassword(faker.internet().password());
 		userinfo.setPhone(faker.phoneNumber().cellPhone());
 		userinfo.setUsername(faker.name().username());
-		updateEmail.setUpdateEmail(faker.internet().safeEmailAddress());
+		//updateEmail.setUpdateEmail(faker.internet().safeEmailAddress());
 	}
 	
 	@Test
@@ -42,23 +42,30 @@ public class UserTest {
 	@Test (dependsOnMethods = {"testPostRequest"})
 	public void testGetRequest()
 	{
-		Response getResponse = UserEndPoints.GetUser(User.username);
+		Response getResponse = UserEndPoints.GetUser(userinfo.getUsername());
 		System.out.println(getResponse.contentType()+ "This is Get Request");
 		getResponse.then().log().all();
 	}
 	@Test(dependsOnMethods = {"testGetRequest"})
 	public void testUpdateRequest()
 	{
-		Response updateResponse = UserEndPoints.UpdateUser(updateEmail, User.username);
+		userinfo.setEmail(faker.internet().safeEmailAddress());
+		
+		
+		Response updateResponse = UserEndPoints.UpdateUser(this.userinfo,userinfo.getUsername());
 		System.out.println("Status code update" + updateResponse.statusCode());
 		Assert.assertEquals(updateResponse.getStatusCode(),200);
 		updateResponse.then().log().all();
+		
+		Response getResponse = UserEndPoints.GetUser(User.username);
+		System.out.println(getResponse.contentType()+ "This is Get Request after update");
+		getResponse.then().log().all();
 	}
 	
 	@Test (dependsOnMethods = {"testUpdateRequest"})
 	public void testDeleteRequest()
 	{
-	   Response Deleteresponse = UserEndPoints.DeletetUser(User.username);
+	   Response Deleteresponse = UserEndPoints.DeletetUser(userinfo.getUsername());
 	   System.out.println("Deleteresponse is" + Deleteresponse);
 	   System.out.println("Status Code" + Deleteresponse.getStatusCode());
 	   Assert.assertEquals(Deleteresponse.getStatusCode(), 200);

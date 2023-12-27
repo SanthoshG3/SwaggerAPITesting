@@ -11,7 +11,7 @@ public class User {
 	String password;
 	String phone;
 	int userStatus;
-	String UpdateEmail;
+	
 	
 	
 	
@@ -65,12 +65,7 @@ public class User {
 		this.userStatus = userStatus;
 	}
 
-	public String getUpdateEmail() {
-		return UpdateEmail;
-	}
-	public void setUpdateEmail(String updateEmail) {
-		this.UpdateEmail = updateEmail;
-	}
+	
 	
 		
 	
